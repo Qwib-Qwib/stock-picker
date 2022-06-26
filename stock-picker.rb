@@ -1,11 +1,15 @@
 def stock_picker (prices_array) #This method is the intializer. It indicates which buying date we're currently considering.
   i = 0
   total_potential_returns = prices_array.reduce({}) do |initial_day, current_buy_price|
-    initial_day["Buy on day #{i}"] = sell_values_calculator(prices_array, buy_date_index = i)  #A method is called to calculate the gains and losses with that specific buying date in mind.
-  i += 1
-  initial_day
+    if i == prices_array.length - 1
+    initial_day
+    else
+        initial_day["Buy on day #{i}"] = sell_values_calculator(prices_array, buy_date_index = i)  #A method is called to calculate the gains and losses with that specific buying date in mind.
+      i += 1
+      initial_day
+    end
   end
-  total_potential_returns.map {|buying_day| buying_day.max}
+  max_values_set = total_potential_returns.map {|buying_day, sell_values| sell_values.max{|pair1, pair2| pair1[1] <=> pair2[1]}}
 end
 
 def sell_values_calculator (prices_array, buy_date_index)
